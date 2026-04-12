@@ -25,15 +25,15 @@ export class MediaService {
    */
   static async uploadFile(
     file: any,
-    folder: string = "survey",
+    folder: string = "articles",
     provider?: StorageProvider,
   ): Promise<UploadResult> {
     const storageType: StorageProvider = provider || this.defaultProvider;
 
     // Ensure the folder is always within 'survey'
-    const targetFolder = folder.startsWith("survey")
+    const targetFolder = folder.startsWith("articles")
       ? folder
-      : `survey/${folder}`;
+      : `articles/${folder}`;
     let resultUrl: string;
     let mediaType: "PHOTO" | "VIDEO" | "AUDIO";
 
