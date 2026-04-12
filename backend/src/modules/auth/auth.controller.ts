@@ -17,14 +17,13 @@ const generateAuthToken = (user: any) => {
       email: user.email,
     },
     (process.env.JWT_SECRET as string) || "manish",
-    { expiresIn: "1year" },
   );
 };
 
 export const registerAdmin = asyncHandler(async (req: any, res: any) => {
   const { email, password, name } = req.body;
 
-  console.log("req.body is ",req.body);
+  console.log("req.body is ", req.body);
 
   if (!email || !password) {
     throw new AppError("Email and password are required", 400);

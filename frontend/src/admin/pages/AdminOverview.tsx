@@ -106,7 +106,7 @@ const AdminOverview = () => {
                     </CardContent>
                 </Card>
                 
-                <Card className="border-none shadow-sm rounded-2xl bg-primary text-primary-foreground overflow-hidden relative">
+                <Card className="border-none shadow-sm rounded-2xl bg-[#252525] text-white">
                     <div className="absolute top-0 right-0 p-4 opacity-10">
                         <BookOpen className="w-24 h-24 rotate-12" />
                     </div>

@@ -29,7 +29,7 @@ const corsOptions = {
 
 const limiter = rateLimit({
   windowMs: 60 * 1000, // 1 minute
-  max: 50, // max 50 requests
+  max: 150, // max 50 requests
 
   handler: (req, res, next) => {
     next(new AppError("Too many requests, please try again later", 429));
