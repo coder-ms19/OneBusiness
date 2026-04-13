@@ -27,7 +27,7 @@ const AdminLayout = () => {
     { label: "Overview", path: "/admin/dashboard", icon: LayoutDashboard },
     { label: "Articles", path: "/admin/articles", icon: FileText },
     { label: "Categories", path: "/admin/categories", icon: LayoutList },
-    { label: "Cover Image", path: "/admin/magazine", icon: ImageIcon },
+    // { label: "Cover Image", path: "/admin/magazine", icon: ImageIcon },
   ];
 
   return (

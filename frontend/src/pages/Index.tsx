@@ -81,7 +81,7 @@ const Index = () => {
           <p className="text-background/70 font-body text-base md:text-xl mt-4 sm:mt-6 max-w-2xl mx-auto">
             Digital Magazine • PR Features • Business News
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 px-6 sm:px-0">
+          {/* <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 px-6 sm:px-0">
             <Link to="/get-featured" className="w-full sm:w-auto">
               <Button variant="hero" size="lg" className="w-full px-8">
                 Get Featured <ArrowRight className="ml-2 h-4 w-4" />
@@ -92,7 +92,7 @@ const Index = () => {
                 Read Magazine
               </Button>
             </Link>
-          </div>
+          </div> */}
         </div>
       </section>
 
@@ -193,7 +193,7 @@ const Index = () => {
 
 
       {/* Magazine Section */}
-      <section className="bg-foreground text-background">
+      {/* <section className="bg-foreground text-background">
         <div className="container mx-auto px-4 py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div className="animate-fade-up">
@@ -227,7 +227,7 @@ const Index = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
       {/* Get Featured CTA */}
       <section className="bg-primary">
         <div className="container mx-auto px-4 py-20 text-center">

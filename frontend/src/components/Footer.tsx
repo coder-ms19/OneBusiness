@@ -17,7 +17,7 @@ export function Footer() {
           <div>
             <h4 className="font-headline font-semibold mb-3">Quick Links</h4>
             <div className="flex flex-col gap-2 text-sm opacity-70 font-body">
-              <Link to="/magazine" className="hover:text-primary transition-colors">Magazine</Link>
+              {/* <Link to="/magazine" className="hover:text-primary transition-colors">Magazine</Link> */}
               <Link to="/articles" className="hover:text-primary transition-colors">Articles</Link>
               <Link to="/get-featured" className="hover:text-primary transition-colors">Get Featured</Link>
               <Link to="/about" className="hover:text-primary transition-colors">About</Link>

@@ -42,7 +42,7 @@ const AdminOverview = () => {
     const cards = [
         { label: "Total Articles", value: stats.articles, icon: FileText, color: "text-blue-500", path: "/admin/articles" },
         { label: "Categories", value: stats.categories, icon: LayoutList, color: "text-purple-500", path: "/admin/categories" },
-        { label: "Magazine Setup", value: stats.magazines > 0 ? "Active" : "Pending", icon: BookOpen, color: "text-orange-500", path: "/admin/magazine" },
+        // { label: "Magazine Setup", value: stats.magazines > 0 ? "Active" : "Pending", icon: BookOpen, color: "text-orange-500", path: "/admin/magazine" },
     ];
 
     return (
@@ -106,7 +106,7 @@ const AdminOverview = () => {
                     </CardContent>
                 </Card>
                 
-                <Card className="border-none shadow-sm rounded-2xl bg-[#252525] text-white">
+                {/* <Card className="border-none shadow-sm rounded-2xl bg-[#237aad] text-white">
                     <div className="absolute top-0 right-0 p-4 opacity-10">
                         <BookOpen className="w-24 h-24 rotate-12" />
                     </div>
@@ -125,7 +125,7 @@ const AdminOverview = () => {
                             </button>
                         </Link>
                     </CardContent>
-                </Card>
+                </Card> */}
             </div>
         </div>
     );
