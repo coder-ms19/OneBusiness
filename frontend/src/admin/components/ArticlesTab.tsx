@@ -26,7 +26,10 @@ const ArticlesTab = ({ articles, categories, refreshData }: ArticlesTabProps) =>
   const [artContent, setArtContent] = useState("");
   const [artCat, setArtCat] = useState("");
   const [artImage, setArtImage] = useState<File | null>(null);
+  const [artImages, setArtImages] = useState<File[]>([]);
+  const [existingImages, setExistingImages] = useState<string[]>([]);
   const imageInputRef = useRef<HTMLInputElement>(null);
+  const galleryInputRef = useRef<HTMLInputElement>(null);
 
   const startEdit = (article: any) => {
     setEditingArticle(article);
@@ -34,6 +37,7 @@ const ArticlesTab = ({ articles, categories, refreshData }: ArticlesTabProps) =>
     setArtExcerpt(article.excerpt || "");
     setArtContent(article.content);
     setArtCat(article.categoryId);
+    setExistingImages(article.images || []);
     // Note: We don't set artImage here because it's a file input
   };
 
@@ -44,7 +48,10 @@ const ArticlesTab = ({ articles, categories, refreshData }: ArticlesTabProps) =>
     setArtContent("");
     setArtCat("");
     setArtImage(null);
+    setArtImages([]);
+    setExistingImages([]);
     if (imageInputRef.current) imageInputRef.current.value = "";
+    if (galleryInputRef.current) galleryInputRef.current.value = "";
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -53,11 +60,24 @@ const ArticlesTab = ({ articles, categories, refreshData }: ArticlesTabProps) =>
 
     setIsSubmitting(true);
     let uploadedImageUrl = editingArticle?.imageUrl || null;
+    let uploadedGalleryUrls: string[] = [...existingImages];
 
     try {
       if (artImage) {
-        const loadingToast = toast.loading("Uploading image...");
+        if (artImage.size > 3 * 1024 * 1024) throw new Error("Cover image exceeds 3MB limit");
+        const loadingToast = toast.loading("Uploading cover image...");
         uploadedImageUrl = await mediaService.uploadImage(artImage);
+        toast.dismiss(loadingToast);
+      }
+
+      if (artImages.length > 0) {
+        // Validate sizes
+        const oversized = artImages.filter(f => f.size > 3 * 1024 * 1024);
+        if (oversized.length > 0) throw new Error(`${oversized.length} gallery images exceed the 3MB limit`);
+
+        const loadingToast = toast.loading(`Uploading ${artImages.length} gallery images...`);
+        const galleryUrls = await mediaService.uploadMultipleImages(artImages);
+        uploadedGalleryUrls = [...uploadedGalleryUrls, ...galleryUrls];
         toast.dismiss(loadingToast);
       }
 
@@ -69,6 +89,7 @@ const ArticlesTab = ({ articles, categories, refreshData }: ArticlesTabProps) =>
           excerpt: artExcerpt,
           content: artContent,
           imageUrl: uploadedImageUrl,
+          images: uploadedGalleryUrls,
           published: true
         });
         if (res.success) {
@@ -85,6 +106,7 @@ const ArticlesTab = ({ articles, categories, refreshData }: ArticlesTabProps) =>
           excerpt: artExcerpt,
           content: artContent,
           imageUrl: uploadedImageUrl,
+          images: uploadedGalleryUrls,
           author: randomAuthor,
           published: true
         });
@@ -148,7 +170,28 @@ const ArticlesTab = ({ articles, categories, refreshData }: ArticlesTabProps) =>
               </div>
               <div>
                 <Label>Article Image Cover {editingArticle && "(Leave empty to keep current)"}</Label>
-                <div className="flex items-center gap-2 mt-1">
+                <div className="flex flex-col gap-2 mt-1">
+                  {(artImage || (editingArticle && editingArticle.imageUrl)) && (
+                    <div className="relative w-32 h-32 rounded-lg overflow-hidden border">
+                      <img 
+                        src={artImage ? URL.createObjectURL(artImage) : editingArticle.imageUrl} 
+                        alt="cover preview" 
+                        className="w-full h-full object-cover"
+                      />
+                      {artImage && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setArtImage(null);
+                            if (imageInputRef.current) imageInputRef.current.value = "";
+                          }}
+                          className="absolute top-1 right-1 bg-destructive text-white rounded-full p-1"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      )}
+                    </div>
+                  )}
                   <Input
                     disabled={isSubmitting}
                     type="file"
@@ -156,12 +199,73 @@ const ArticlesTab = ({ articles, categories, refreshData }: ArticlesTabProps) =>
                     ref={imageInputRef}
                     onChange={(e) => {
                       if (e.target.files && e.target.files[0]) {
-                        setArtImage(e.target.files[0]);
+                        const file = e.target.files[0];
+                        if (file.size > 3 * 1024 * 1024) {
+                          toast.error("File size must be less than 3MB");
+                          if (imageInputRef.current) imageInputRef.current.value = "";
+                          return;
+                        }
+                        setArtImage(file);
                       }
                     }}
                   />
                 </div>
               </div>
+              
+              <div>
+                <Label>Additional Gallery Images (Max 3MB each)</Label>
+                <div className="flex items-center gap-2 mt-1">
+                  <Input
+                    disabled={isSubmitting}
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    ref={galleryInputRef}
+                    onChange={(e) => {
+                      if (e.target.files) {
+                        const newFiles = Array.from(e.target.files);
+                        const validFiles = newFiles.filter(f => f.size <= 3 * 1024 * 1024);
+                        const oversizedCount = newFiles.length - validFiles.length;
+                        
+                        if (oversizedCount > 0) {
+                          toast.error(`${oversizedCount} files were skipped (exceed 3MB)`);
+                        }
+                        
+                        setArtImages([...artImages, ...validFiles]);
+                      }
+                    }}
+                  />
+                </div>
+                {(artImages.length > 0 || existingImages.length > 0) && (
+                  <div className="grid grid-cols-4 gap-2 mt-3 p-2 bg-secondary/20 rounded-lg">
+                    {existingImages.map((url, idx) => (
+                      <div key={`existing-${idx}`} className="relative group aspect-square">
+                        <img src={url} alt="" className="w-full h-full object-cover rounded shadow-sm" />
+                        <button
+                          type="button"
+                          onClick={() => setExistingImages(prev => prev.filter((_, i) => i !== idx))}
+                          className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
+                    {artImages.map((file, idx) => (
+                      <div key={`new-${idx}`} className="relative group aspect-square">
+                        <img src={URL.createObjectURL(file)} alt="" className="w-full h-full object-cover rounded shadow-sm border-2 border-primary/50" />
+                        <button
+                          type="button"
+                          onClick={() => setArtImages(prev => prev.filter((_, i) => i !== idx))}
+                          className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground rounded-full p-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                        >
+                          <X className="w-3 h-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
               <div>
                 <Label>Excerpt (Short summary)</Label>
                 <Textarea disabled={isSubmitting} value={artExcerpt} onChange={(e) => setArtExcerpt(e.target.value)} placeholder="Brief summary for the card" />

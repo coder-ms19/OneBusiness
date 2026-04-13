@@ -127,6 +127,21 @@ const ArticleDetailPage = () => {
           loading="lazy"
         />
 
+        {article.images && article.images.length > 0 && (
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-8">
+            {article.images.map((img: string, index: number) => (
+              <div key={index} className="aspect-square overflow-hidden rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300">
+                 <img 
+                   src={img} 
+                   alt={`${article.title} gallery ${index + 1}`} 
+                   className="w-full h-full object-cover "
+                   
+                 />
+              </div>
+            ))}
+          </div>
+        )}
+
         {article.excerpt && (
           <div className="text-lg font-body mt-8 font-medium italic text-foreground/80 border-l-4 border-primary pl-6 py-2 bg-secondary/30 rounded-r-lg">
             {article.excerpt}

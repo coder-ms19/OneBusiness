@@ -36,6 +36,7 @@ const AdminArticles = () => {
                 <FileText className="w-6 h-6 md:w-8 md:h-8 text-primary" />
                 Manage Articles
             </h1>
+            
             <p className="text-[11px] md:text-sm text-muted-foreground mt-1 font-body italic">Create and publish stories.</p>
         </div>
         <ArticlesTab 

@@ -4,7 +4,7 @@ import { AppError } from "../../utils/AppError";
 import { sendResponse } from "../../utils/response";
 
 export const createArticle = asyncHandler(async (req: any, res: any) => {
-  const { title, excerpt, content, imageUrl, author, published, categoryId } = req.body;
+  const { title, excerpt, content, imageUrl, images, author, published, categoryId } = req.body;
   const userId = req.user?.id; // Assuming authentication middleware sets req.user
 
   if (!title || !content || !categoryId) {
@@ -22,6 +22,7 @@ export const createArticle = asyncHandler(async (req: any, res: any) => {
       excerpt,
       content,
       imageUrl,
+      images: images || [],
       author,
       published: published ?? false,
       categoryId,
@@ -79,7 +80,7 @@ export const getArticleForAdmin = asyncHandler(async (req: any, res: any) => {
 
 export const updateArticle = asyncHandler(async (req: any, res: any) => {
   const { id } = req.params;
-  const { title, excerpt, content, imageUrl, author, published, categoryId } = req.body;
+  const { title, excerpt, content, imageUrl, images, author, published, categoryId } = req.body;
 
   const existingArticle = await prisma.article.findUnique({ where: { id } });
   if (!existingArticle) {
@@ -100,6 +101,7 @@ export const updateArticle = asyncHandler(async (req: any, res: any) => {
       excerpt,
       content,
       imageUrl,
+      images: images || [],
       author,
       published,
       categoryId,

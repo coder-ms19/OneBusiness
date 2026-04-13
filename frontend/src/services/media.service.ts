@@ -17,6 +17,21 @@ class MediaService {
 
     return response.data.data.url;
   }
+
+  public async uploadMultipleImages(files: File[]): Promise<string[]> {
+    const formData = new FormData();
+    files.forEach(file => {
+      formData.append("files", file);
+    });
+
+    const response = await axiosInstance.post("/media/upload-multiple", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data.data.map((item: any) => item.url);
+  }
 }
 
 export const mediaService = new MediaService();

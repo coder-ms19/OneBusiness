@@ -22,3 +22,20 @@ export const uploadMedia = asyncHandler(async (req: any, res: any) => {
     },
   });
 });
+
+export const uploadMultipleMedia = asyncHandler(async (req: any, res: any) => {
+  if (!req.files || req.files.length === 0) {
+    throw new AppError("No files provided", 400);
+  }
+
+  const results = await Promise.all(
+    req.files.map((file: any) => MediaService.uploadFile(file, "articles"))
+  );
+
+  return sendResponse(res, {
+    status: 200,
+    success: true,
+    message: `${results.length} media files uploaded successfully`,
+    data: results.map(r => ({ url: r.url, mediaType: r.mediaType })),
+  });
+});
