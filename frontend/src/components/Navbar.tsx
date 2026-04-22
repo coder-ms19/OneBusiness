@@ -71,7 +71,7 @@ export function Navbar() {
           ) : (
             <div className="ml-4 border-l pl-4 border-border">
               <Link to="/auth/admin/login">
-                <Button variant="default" size="sm" className="font-body">Admin Login</Button>
+                <Button variant="default" size="sm" className="font-body">Login</Button>
               </Link>
             </div>
           )}
@@ -114,7 +114,7 @@ export function Navbar() {
                 </>
               ) : (
                 <Link to="/auth/admin/login" onClick={() => setOpen(false)}>
-                  <Button variant="default" className="w-full justify-start font-body">Admin Login</Button>
+                  <Button variant="default" className="w-[20%] justify-start font-body">Login</Button>
                 </Link>
               )}
             </div>
