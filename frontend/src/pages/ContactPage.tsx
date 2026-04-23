@@ -24,7 +24,7 @@ const ContactPage = () => {
             <div className="space-y-4">
               {[
                 { icon: Mail, label: "Email", value: "contact@onebusinessindia.com" },
-                { icon: Phone, label: "Phone", value: "+91 98765 43210" },
+                // { icon: Phone, label: "Phone", value: "+91 98765 43210" },
                 { icon: MapPin, label: "Location", value: "Mumbai, India" },
               ].map((item) => (
                 <div key={item.label} className="flex items-start gap-3">
