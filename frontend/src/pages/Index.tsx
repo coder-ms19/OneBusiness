@@ -63,7 +63,7 @@ const Index = () => {
   }).format(new Date());
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen mb-[15vh]">
       {/* Hero */}
       <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
@@ -229,7 +229,7 @@ const Index = () => {
         </div>
       </section> */}
       {/* Get Featured CTA */}
-      <section className="bg-primary">
+      {/* <section className="bg-primary">
         <div className="container mx-auto px-4 py-20 text-center">
           <h2 className="font-headline text-3xl md:text-4xl font-bold text-primary-foreground">
             Ready to Build Your Brand Authority?
@@ -243,7 +243,7 @@ const Index = () => {
             </Button>
           </Link>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 };

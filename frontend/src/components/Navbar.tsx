@@ -8,7 +8,7 @@ const navLinks = [
   // { label: "Magazine", path: "/magazine" },
   { label: "Articles", path: "/articles" },
   { label: "Directory", path: "/user/articles" },
-  { label: "Get Featured", path: "/get-featured" },
+  // { label: "Get Featured", path: "/get-featured" },
   { label: "About", path: "/about" },
   { label: "Contact", path: "/contact" },
 ];

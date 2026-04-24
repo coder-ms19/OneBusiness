@@ -23,9 +23,9 @@ const ContactPage = () => {
             <h2 className="font-headline text-2xl font-bold text-foreground">Get in Touch</h2>
             <div className="space-y-4">
               {[
-                { icon: Mail, label: "Email", value: "contact@onebusinessindia.com" },
+                { icon: Mail, label: "Email", value: "" },
                 // { icon: Phone, label: "Phone", value: "+91 98765 43210" },
-                { icon: MapPin, label: "Location", value: "Mumbai, India" },
+                { icon: MapPin, label: "Location", value: "" },
               ].map((item) => (
                 <div key={item.label} className="flex items-start gap-3">
                   <item.icon className="h-5 w-5 text-primary mt-0.5" />
@@ -37,14 +37,14 @@ const ContactPage = () => {
               ))}
             </div>
 
-            <a
+            {/* <a
               href="https://wa.me/919876543210"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-green-600 text-primary-foreground px-6 py-3 rounded-lg font-body font-medium text-sm hover:bg-green-700 transition-colors"
             >
               <MessageCircle className="h-4 w-4" /> Chat on WhatsApp
-            </a>
+            </a> */}
           </div>
 
           {/* Form */}
